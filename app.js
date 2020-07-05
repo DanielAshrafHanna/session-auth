@@ -11,14 +11,14 @@ const {
     NODE_ENV = 'development',
 
     SESS_NAME = 'sid',
-    SESS_SECRET =
+    SESS_SECRET ='a./sdsd/.gfgf' ,
     SESS_LIFETIME = TWO_HOURS
 }   = process.env
 
 const IN_PROD = NODE_ENV === 'production'
 
 const users = [
-    {id:"1",code:'123456789'}
+    {id:"1",code:"123456"}
 ]
 
 const app = express()
@@ -89,6 +89,7 @@ app.get('/register' , redirectHome , (req, res) => {  // link with random number
 
 app.post('/login' , redirectHome , (req, res) => {   // reciving data from text field 
     const {code} = req.body
+    console.log(code)
     console.log(req.body)   //test to see incoming from react 
     
     if (code) {
@@ -107,25 +108,29 @@ app.post('/login' , redirectHome , (req, res) => {   // reciving data from text 
 })
 
 app.post('/register', redirectHome, (req, res) => {  // reciveing code from fenerate code button
-    const {code} = req.body
+   const {random} = req.body
+    console.log(random)
     console.log(req.body)   // test to see incoming from react
    // console.log('sup77')
 
-    if (code){
+    if (random){
       const exists = users.some(
-        user => user.code === code
+        user => user.code === random
       )  
 
-      if (!exist){                 // saving the user cookie 
+      if (!exists){                 // saving the user cookie 
+        var randomString = random.toString();
           const user = {
             id: users.length +1,
-            code
+            code : randomString 
           }
           users.push(user)
+          console.log(users)   // test
 
           req.session.userId = user.id
 
-          return res.redirect('/home')
+         // return res.redirect('/home')
+        return res.status(200).json("created")
 
       }
     }
