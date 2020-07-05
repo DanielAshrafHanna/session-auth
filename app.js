@@ -30,10 +30,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.raw());
 app.use(cors());
 
-// app.use(express.json());
-// app.use(bodyParser.json())
-// app.use(express.urlencoded({ extended: false }));
-
 app.use(session({
     name: SESS_NAME,
     resave: false,
@@ -91,52 +87,50 @@ app.get('/register' , redirectHome , (req, res) => {  // link with random number
 
 })
 
-app.post('/login' , redirectHome , (req, res) => {  
+app.post('/login' , redirectHome , (req, res) => {   // reciving data from text field 
     const {code} = req.body
+    console.log(req.body)   //test to see incoming from react 
     
     if (code) {
-        const user = user.find(
-            user => user.code ==code
+        const user = users.find(
+            user => user.code ===code
+        
         )
         if (user) {
-            req.session.code = user.code
-            return response.redirect('/home')
+            req.session.userId = user.id   // check this again
+           // return response.redirect('/home')
+           return res.status(200).json("you are in ")
         }
     }
-        res.redirect('/login')
+    //    res.redirect('/login')
+    res.status(200).json("please create code")
 })
 
-
-app.post('/register', redirectHome, (req, res) => {  // should take code from button that generates code
+app.post('/register', redirectHome, (req, res) => {  // reciveing code from fenerate code button
     const {code} = req.body
-    console.log(req.body)
-    console.log('sup77')
+    console.log(req.body)   // test to see incoming from react
+   // console.log('sup77')
 
-    app.post('/register', redirectHome, (req, res) => {  // should take code from button that generates code
-        const {code} = req.body
-        console.log(req.body)
-        console.log('sup77')
-    
-        if (code){
-          const exists = users.some(
-            user => user.code === code
-          )  
-    
-          if (!exist){                 // saving the user cookie 
-              const user = {
-                id: users.length +1,
-                code
-              }
-              users.push(user)
-    
-              req.session.userId = user.id
-    
-              return res.redirect('/home')
-    
+    if (code){
+      const exists = users.some(
+        user => user.code === code
+      )  
+
+      if (!exist){                 // saving the user cookie 
+          const user = {
+            id: users.length +1,
+            code
           }
-        }
-        res.status(200).json({data: 'Okay'})
-    })
+          users.push(user)
+
+          req.session.userId = user.id
+
+          return res.redirect('/home')
+
+      }
+    }
+    res.status(200).json({data: 'Okay'})
+})
 
 app.post('/logout' ,redirectLogin, (req, res) => {
     req.session.destroy(err => {
