@@ -26,6 +26,10 @@ app.use(bodyParser.urlencoded({
     extended: true
 }))
 
+// app.use(express.json());
+// app.use(bodyParser.json())
+// app.use(express.urlencoded({ extended: false }));
+
 app.use(session({
     name: SESS_NAME,
     resave: false,
@@ -98,30 +102,41 @@ app.post('/login' , redirectHome , (req, res) => {
         res.redirect('/login')
 })
 
-app.post('/register/' ,redirectHome  , (req, res) => {  // should take code from button that generates code
-    const {code} = req.body
-    console.log(req.body.random)
-    console.log('sup77')
+let code1 = [];
 
-    if (code){
-      const exists = users.some(
-        user => user.code === code
-      )  
+app.post('/register' ,redirectHome  , (req, res) => {  // should take code from button that generates code
+   // const {code} = req.body
+   // console.log(req.body.random)
+  //  console.log('1111')
+ 
+    const rend = {
+        random: req.body.random
+      };
 
-      if (!exist){                 // saving the user cookie 
-          const user = {
-            id: users.length +1,
-            code
-          }
-          users.push(user)
+      code1.push(rend);
+      console.log(code1);
 
-          req.session.userId = user.id
 
-          return res.redirect('/home')
 
-      }
-    }
-    res.redirect('/register')
+    // if (code){
+    //   const exists = users.some(
+    //     user => user.code === code
+    //   )  
+
+    //   if (!exist){                 // saving the user cookie 
+    //       const user = {
+    //         id: users.length +1,
+    //         code
+    //       }
+    //       users.push(user)
+
+    //       req.session.userId = user.id
+
+    //       return res.redirect('/home')
+
+    //   }
+    // }
+    // res.redirect('/register')
 })
 
 app.post('/logout' ,redirectLogin, (req, res) => {
