@@ -1,6 +1,7 @@
 const express = require ('express')
 const bodyParser = require('body-parser')
 const session = require ('express-session')
+const cors = require('cors')
 const { response } = require('express')
 
 const TWO_HOURS = 1000*60*60*2
@@ -25,6 +26,9 @@ const app = express()
 app.use(bodyParser.urlencoded({
     extended: true
 }))
+app.use(bodyParser.json());
+app.use(bodyParser.raw());
+app.use(cors());
 
 // app.use(express.json());
 // app.use(bodyParser.json())
@@ -102,42 +106,37 @@ app.post('/login' , redirectHome , (req, res) => {
         res.redirect('/login')
 })
 
-let code1 = [];
 
-app.post('/register' ,redirectHome  , (req, res) => {  // should take code from button that generates code
-   // const {code} = req.body
-   // console.log(req.body.random)
-  //  console.log('1111')
- 
-    const rend = {
-        random: req.body.random
-      };
+app.post('/register', redirectHome, (req, res) => {  // should take code from button that generates code
+    const {code} = req.body
+    console.log(req.body)
+    console.log('sup77')
 
-      code1.push(rend);
-      console.log(code1);
-
-
-
-    // if (code){
-    //   const exists = users.some(
-    //     user => user.code === code
-    //   )  
-
-    //   if (!exist){                 // saving the user cookie 
-    //       const user = {
-    //         id: users.length +1,
-    //         code
-    //       }
-    //       users.push(user)
-
-    //       req.session.userId = user.id
-
-    //       return res.redirect('/home')
-
-    //   }
-    // }
-    // res.redirect('/register')
-})
+    app.post('/register', redirectHome, (req, res) => {  // should take code from button that generates code
+        const {code} = req.body
+        console.log(req.body)
+        console.log('sup77')
+    
+        if (code){
+          const exists = users.some(
+            user => user.code === code
+          )  
+    
+          if (!exist){                 // saving the user cookie 
+              const user = {
+                id: users.length +1,
+                code
+              }
+              users.push(user)
+    
+              req.session.userId = user.id
+    
+              return res.redirect('/home')
+    
+          }
+        }
+        res.status(200).json({data: 'Okay'})
+    })
 
 app.post('/logout' ,redirectLogin, (req, res) => {
     req.session.destroy(err => {
@@ -153,5 +152,5 @@ app.post('/logout' ,redirectLogin, (req, res) => {
 
 
 app.listen(PORT, () => console.log (
-    'http://localhost:${PORT}'
+    `http://localhost:${PORT}`
 ) )
