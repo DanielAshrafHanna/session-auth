@@ -3,11 +3,12 @@ const bodyParser = require('body-parser')
 const session = require ('express-session')
 const cors = require('cors')
 const { response } = require('express')
+const path = require ('path')   //3 
 
 const TWO_HOURS = 1000*60*60*2
 
 const {
-    PORT = 3000,
+    PORT = process.env.PORT || 3000,  //1
     NODE_ENV = 'development',
 
     SESS_NAME = 'sid',
@@ -104,7 +105,7 @@ app.post('/login' , redirectHome , (req, res) => {   // reciving data from text 
         }
     }
     //    res.redirect('/login')
-    res.status(200).json("please create code")
+   // res.status(200).json("please create code")
 })
 
 app.post('/register', redirectHome, (req, res) => {  // reciveing code from fenerate code button
@@ -148,6 +149,16 @@ app.post('/logout' ,redirectLogin, (req, res) => {
     })
 
 })
+
+//3
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static( 'win-as-much-as-you-can/build' ));
+
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, 'win-as-much-as-you-can', 'build', 'index.html')); // relative path
+    });
+}
+
 
 
 app.listen(PORT, () => console.log (
