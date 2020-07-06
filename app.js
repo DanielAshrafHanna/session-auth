@@ -3,7 +3,7 @@ const bodyParser = require('body-parser')
 const session = require ('express-session')
 const cors = require('cors')
 const { response } = require('express')
-const path = require ('path')   //3 
+//const path = require ('path')   //3 
 
 const TWO_HOURS = 1000*60*60*2
 
@@ -150,14 +150,14 @@ app.post('/logout' ,redirectLogin, (req, res) => {
 
 })
 
-//3
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static( 'win-as-much-as-you-can/build' ));
+// //3
+// if (process.env.NODE_ENV === 'production') {
+//     app.use(express.static( 'win-as-much-as-you-can/build' ));
 
-    app.get('*', (req, res) => {
-        res.sendFile(path.join(__dirname, 'win-as-much-as-you-can', 'build', 'index.html')); // relative path
-    });
-}
+//     app.get('*', (req, res) => {
+//         res.sendFile(path.join(__dirname, 'win-as-much-as-you-can', 'build', 'index.html')); // relative path
+//     });
+// }
 
 
 
