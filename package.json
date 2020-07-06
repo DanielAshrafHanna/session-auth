@@ -5,8 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon app" ,
-    "heroku-postbuild": "cd win-as-much-as-you-can && npm install && npm run build"
+    "dev": "nodemon app" 
+   
   },
   "keywords": [],
   "author": "",
